@@ -24,6 +24,7 @@ def drop_zero(n):
     n = str(n)
     return n.rstrip('0').rstrip('.') if '.' in n else n
 
+	
 def numerize(n, decimals=2):
     '''
     Params:
@@ -41,29 +42,17 @@ def numerize(n, decimals=2):
     n = abs(Decimal(n))
     if n < 1000:
         return is_negative_string + str(drop_zero(round_num(n, decimals)))
-    elif n >= 1000 and n < 1000000:
-        if n % 1000 == 0:
-            return is_negative_string + str(int(n / 1000)) + "K"
-        else:
-            n = n / 1000
-            return is_negative_string + str(drop_zero(round_num(n, decimals))) + "K"
-    elif n >= 1000000 and n < 1000000000:
-        if n % 1000000 == 0:
-            return is_negative_string + str(int(n / 1000000)) + "M"
-        else:
-            n = n / 1000000
-            return is_negative_string + str(drop_zero(round_num(n, decimals))) + "M"
-    elif n >= 1000000000 and n < 1000000000000:
-        if n % 1000000000 == 0:
-            return is_negative_string + str(int(n / 1000000000)) + "B"
-        else:
-            n = n / 1000000000
-            return is_negative_string + str(drop_zero(round_num(n, decimals))) + "B"
-    elif n >= 1000000000000 and n < 1000000000000000:
-        if n % 1000000000000 == 0:
-            return is_negative_string + str(int(n / 1000000000000)) + "T"
-        else:
-            n = n / 1000000000000
-            return is_negative_string + str(drop_zero(round_num(n, decimals))) + "T"
-    else:
+    elif n >= 1000000000000000:
         return is_negative_string + str(n)
+    counter = -1
+    num = ["K", "M", "B", "T"]
+    while n >= 1000:
+        if counter + 1 > 3:
+            break
+        n /= 1000
+        counter += 1
+    return is_negative_string + str(n) + num[counter]
+  
+if __name__ == '__main__':
+    num = numerize(1000)
+    print(f"The result is {num}")
